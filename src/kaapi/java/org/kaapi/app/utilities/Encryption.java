@@ -20,6 +20,7 @@ public class Encryption {
 			decoded =  new String(DatatypeConverter.parseBase64Binary(encoded));
 		}catch(Exception e){
 //			e.printStackTrace();
+			
 		}
 		return decoded;
 	}
