@@ -10,6 +10,7 @@ import org.kaapi.app.entities.Pagination;
 import org.kaapi.app.entities.Playlist;
 import org.kaapi.app.entities.PlaylistDetail;
 import org.kaapi.app.entities.Video;
+import org.kaapi.app.entities.Website;
 import org.kaapi.app.forms.ForumCommentDTO;
 import org.kaapi.app.forms.FrmCreatePlaylist;
 import org.kaapi.app.forms.FrmUpdatePlaylist;
@@ -18,6 +19,7 @@ import org.kaapi.app.services.ForumCommentService;
 import org.kaapi.app.services.MainCategoryService;
 import org.kaapi.app.services.PlayListServics;
 import org.kaapi.app.services.TutorialService;
+import org.kaapi.app.services.WebsiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +45,9 @@ public class PlayListControllers {
 	
 	@Autowired
 	ForumCommentService forumCommentService;
+	
+	@Autowired
+	private WebsiteService websiteService;
 	
 	
 	//Toggle playlist: 
@@ -855,6 +860,14 @@ public class PlayListControllers {
 				map.put("LIST_QUESTION", question);
 			}else{
 				map.put("STATUS_QUESTION", false);
+			}
+			
+			pagin.setItem(12);
+			ArrayList<Website> website = websiteService.findWebsitebyCategoryId(pagin, "empty");
+			if(!website.isEmpty()){
+				map.put("LIST_WEBSTIE", website);
+			}else{
+				map.put("STATUS_WEBSITE", false);
 			}
 			
 		}catch(Exception e){
