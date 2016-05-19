@@ -6,6 +6,7 @@ import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -70,11 +71,31 @@ public class SendMailTLS {
 		}
 	}
 	
-	/*public static void main(String[] args) {
-		new SendMailTLS().sendMaile("tolapheng99@gmail.com", "Test", "Hello Hello");
+	public static void main(String[] args) {
+//		new SendMailTLS().sendMaile("tolapheng99@gmail.com", "Test", "Hello Hello");
 //		for(int i=0;i<500;i++){
 //			new SendMailTLS().sendMaile("t00639204@gmail.com", "Test", "Hello Hello");
 //			System.out.println(i);
 //		}
-	}*/
+		
+		if(isValidEmailAddress("11188888@gmail.com")){
+			System.out.println("Correct");
+		}else{
+			System.out.println("Incorrect");
+		}
+		
+	}
+	
+	
+	public static boolean isValidEmailAddress(String email) {
+		   boolean result = true;
+		   try {
+		      InternetAddress emailAddr = new InternetAddress(email);
+		      emailAddr.validate();
+		   } catch (AddressException ex) {
+		      result = false;
+		   }
+		   return result;
+		}
+	
 }

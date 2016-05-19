@@ -32,13 +32,15 @@ public class WebsiteServiceImpl implements WebsiteService {
 		}else{
 			cateId = Encryption.decode(cateId);
 		}
-		String sql = " SELECT * FROM website.tbl_website WHERE status='1' AND CAST(category_id as VARCHAR) LIKE ? offset ? limit ?";
+		String sql =  " SELECT * FROM website.tbl_website WHERE status='1' " + ((cateId=="") ? "" : " AND category_id= "+ cateId+ " ")
+					//+ " CAST(category_id as VARCHAR) LIKE ? "
+					+ "  ORDER BY index ASC limit ?  offset ?  ";
 		try (Connection cnn = dataSource.getConnection(); PreparedStatement ps = cnn.prepareStatement(sql);) {
 			ArrayList<Website> websites =new ArrayList<Website>();
-			ps.setString(1,"%"+cateId+"%");
-			System.out.println("Category id "  + cateId);
+//			ps.setString(1,"%"+cateId+"%");
+//			System.out.println("Category id "  + cateId);
 			ps.setInt(2,pagin.offset());
-			ps.setInt(3, pagin.getItem());
+			ps.setInt(1, pagin.getItem());
 			Website website = null;
 			ResultSet rs = null;
 			rs = ps.executeQuery();
@@ -84,7 +86,7 @@ public class WebsiteServiceImpl implements WebsiteService {
 	
 	@Override
 	public ArrayList<WebSiteCategory> findAllCategory() {
-		String sql = " SELECT * FROM website.tbl_category WHERE status='1'";
+		String sql = " SELECT * FROM website.tbl_category WHERE status='1' ORDER BY index ASC";
 		try (Connection cnn = dataSource.getConnection(); PreparedStatement ps = cnn.prepareStatement(sql);) {
 			ArrayList<WebSiteCategory> cates =new ArrayList<WebSiteCategory>();
 			WebSiteCategory cate = null;

@@ -862,7 +862,7 @@ public class PlayListControllers {
 				map.put("STATUS_QUESTION", false);
 			}
 			
-			pagin.setItem(12);
+			pagin.setItem(20);
 			ArrayList<Website> website = websiteService.findWebsitebyCategoryId(pagin, "empty");
 			if(!website.isEmpty()){
 				map.put("LIST_WEBSTIE", website);
