@@ -244,6 +244,7 @@ public class UserController {
 		}catch(Exception e){
 			map.put("MESSAGE", "OPERATION FAIL");
 			map.put("STATUS", false);
+			e.printStackTrace();
 		}
 		return new ResponseEntity<Map<String , Object>>(map , HttpStatus.OK);	
 	}

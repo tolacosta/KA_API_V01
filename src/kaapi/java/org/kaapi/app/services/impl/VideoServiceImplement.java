@@ -1072,10 +1072,10 @@ public class VideoServiceImplement implements VideosService{
 
 	@Override
 	public List<Playlist> listMainCategory() {
-		String sql = "SELECT DISTINCT(P.maincategory), M.maincategoryname "
+		String sql = "SELECT DISTINCT(P.maincategory), M.maincategoryname , M.index "
 				   + "FROM tblplaylist P "
 				   + "INNER JOIN tblmaincategory M ON P.maincategory=M.maincategoryid "
-				   + "WHERE P.maincategory NOTNULL AND P.status=TRUE";
+				   + "WHERE P.maincategory NOTNULL AND P.status=TRUE AND M.status=true ORDER BY M.index DESC";
 	
 		List<Playlist> list = new ArrayList<Playlist>();
 		Playlist playlist = null;
@@ -1101,7 +1101,7 @@ public class VideoServiceImplement implements VideosService{
 				+ "	FROM tblplaylist P"
 				+ "	INNER JOIN tblmaincategory M ON P.maincategory=M.maincategoryid"
 				+ "	INNER JOIN tbluser u ON u.userid = P.userid"
-				+ "	WHERE P.maincategory NOTNULL AND P.status=TRUE";
+				+ "	WHERE P.maincategory NOTNULL AND P.status=TRUE ORDER BY M.index DESC, P.index DESC";
 	
 		List<Playlist> list = new ArrayList<Playlist>();
 		Playlist playlist = null;

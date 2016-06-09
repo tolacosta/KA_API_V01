@@ -226,7 +226,7 @@ public class UserServiceImpl implements UserService {
 		}
 		String sql = " SELECT"
 				+ " u.userid, u.email, u.password, u.username, u.gender, u.dateofbirth, u.phonenumber,u.registerdate,u.userimageurl, u.universityid , uni.universityname, u.departmentid ,dep.departmentname , u.point,"
-				+ " ut.usertypeid, ut.usertypename  ,  u.sc_fb_id , u.isconfirmed , u.sc_type"
+				+ " ut.usertypeid, ut.usertypename  ,  u.sc_fb_id , u.isconfirmed , u.sc_type, u.resend_count "
 				+ " FROM"
 				+ " TBLUSER u INNER JOIN TBLUSERTYPE ut ON u.USERTYPEID=ut.USERTYPEID"
 				+ " LEFT JOIN tbluniversity uni ON u.universityid = uni.universityid"
@@ -279,6 +279,7 @@ public class UserServiceImpl implements UserService {
 				u.setScFacebookId(rs.getString("sc_fb_id"));
 				u.setConfirmed(rs.getBoolean("isconfirmed"));
 				u.setScType(rs.getString("sc_type"));
+				u.setPoint(rs.getInt("resend_count"));
 				lst.add(u);
 			}
 			return lst;
@@ -561,7 +562,11 @@ public class UserServiceImpl implements UserService {
 			ps.setString(10,user.getScGmailId());
 			ps.setString(11,user.getScType());
 			ps.setString(12, user.getPhoneNumber());
-			ps.setDate(13, new java.sql.Date(user.getDateOfBirth().getTime()));
+			if(user.getDateOfBirth() == null){
+				ps.setDate(13, null);
+			}else{
+				ps.setDate(13, new java.sql.Date(user.getDateOfBirth().getTime()));
+			}
 			if(ps.executeUpdate()>0)
 				return true;
 		} catch (SQLException e) {
@@ -771,6 +776,20 @@ public class UserServiceImpl implements UserService {
 				}
 			}
 		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+
+	@Override
+	public boolean updateResendCountEmail(String email) {
+		String sql =  "update  tbluser set resend_count=resend_count+1 where email = ? ";
+		try(Connection cnn = dataSource.getConnection() ; PreparedStatement ps = cnn.prepareStatement(sql)) {
+		    ps.setString(1, email);
+			if(ps.executeUpdate()>0)
+				return true;
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return false;

@@ -31,7 +31,7 @@ public class MainCategoryServiceImpl implements MainCategoryService {
 			ResultSet rs = null;
 			List<MainCategory> maincategory = new ArrayList<MainCategory>();
 			MainCategory dto = null;
-			String sql = "SELECT MC.*, COUNT(C.categoryid) COUNTCATEGORY FROM TBLMAINCATEGORY MC LEFT JOIN TBLCATEGORY C ON MC.maincategoryid=C.maincategoryid WHERE MC.maincategoryname LIKE ? GROUP BY MC.maincategoryid";
+			String sql = "SELECT MC.*, COUNT(C.categoryid) COUNTCATEGORY FROM TBLMAINCATEGORY MC LEFT JOIN TBLCATEGORY C ON MC.maincategoryid=C.maincategoryid WHERE MC.maincategoryname LIKE ? and MC.status=true  GROUP BY MC.maincategoryid ORDER BY MC.index DESC ";
 			con = dataSource.getConnection();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, "%" + keyword + "%");
@@ -68,7 +68,7 @@ public class MainCategoryServiceImpl implements MainCategoryService {
 		try {
 			ResultSet rs = null;
 			List<MainCategory> maincategory = new ArrayList<MainCategory>();
-			String sql = "SELECT MC.*, COUNT(C.categoryid) COUNTCATEGORY FROM TBLMAINCATEGORY MC LEFT JOIN TBLCATEGORY C ON MC.maincategoryid=C.maincategoryid WHERE MC.maincategoryid=? GROUP BY MC.maincategoryid";
+			String sql = "SELECT MC.*, COUNT(C.categoryid) COUNTCATEGORY FROM TBLMAINCATEGORY MC LEFT JOIN TBLCATEGORY C ON MC.maincategoryid=C.maincategoryid WHERE MC.maincategoryid=? and MC.status=true  GROUP BY MC.maincategoryid";
 			con = dataSource.getConnection();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setInt(1,Integer.parseInt(Encryption.decode(maincategoryid)));

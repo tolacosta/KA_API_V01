@@ -11,7 +11,6 @@ import org.kaapi.app.forms.FrmChangePassword;
 import org.kaapi.app.forms.FrmMobileLogin;
 import org.kaapi.app.forms.FrmMobileRegister;
 import org.kaapi.app.forms.FrmResetPassword;
-import org.kaapi.app.forms.FrmStudentDetail;
 import org.kaapi.app.forms.FrmUpdateUser;
 import org.kaapi.app.forms.FrmValidateEmail;
 import org.kaapi.app.forms.FrmWebLogin;
@@ -51,6 +50,8 @@ public interface UserService {
 	
 	public boolean isUpdateUserFaceboook(FrmAddUser user);
 	public boolean checkSocialID(String ID);
+	
+	public boolean updateResendCountEmail(String email);
 
 	
 	

@@ -928,7 +928,7 @@ public class PlayListServiceImpl implements PlayListServics{
 			String sql = "SELECT P.playlistid, P.playlistname, P.description, P.userid, P.thumbnailurl, P.publicview, P.maincategory, P.bgimage, p.color, " 
 							+"P.status "  
 							+"FROM tblplaylist P "
-							+"WHERE P.maincategory =? AND P.status=TRUE"; 
+							+"WHERE P.maincategory =? AND P.status=TRUE ORDER BY P.index DESC"; 
 								
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setInt(1, Integer.parseInt(Encryption.decode(categoryid)));

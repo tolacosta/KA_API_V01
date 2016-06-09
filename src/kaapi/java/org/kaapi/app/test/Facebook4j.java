@@ -6,14 +6,18 @@ import java.net.URL;
 import facebook4j.Facebook;
 import facebook4j.FacebookException;
 import facebook4j.FacebookFactory;
+import facebook4j.Friend;
+import facebook4j.Post;
 import facebook4j.PostUpdate;
+import facebook4j.ResponseList;
+import facebook4j.User;
 import facebook4j.auth.AccessToken;
-
 public class Facebook4j {
 	
-	
+	private static final boolean OVERLY_VERBOSE = true;
 	
 	public static void main(String[] args) throws FacebookException, MalformedURLException {
+		
 		Facebook facebook = new FacebookFactory().getInstance();
 		
 		facebook.setOAuthAppId("278987345822711", "fcf40089e0d424bc8a7cbbef9f0e5865");
@@ -32,8 +36,26 @@ public class Facebook4j {
                 .caption(caption)
                 .description(description);
 		facebook.postFeed(post);
+		
+		
+		
 //		facebook.postStatusMessage(post);
 //		facebook.postStatusMessage("Testing facebook post By JAVA11.");
+		
+		/*User user3 = facebook.getUser("100001860268708");
+		ResponseList<Friend> friends = facebook.getFriends(user3.getId());
+        if (OVERLY_VERBOSE) {
+            System.out.println("Number of friends:" + friends.size());
+            for (Friend f : friends) {
+                System.out.println(f.getName());
+                ResponseList<Post> statuses = facebook.getStatuses(f.getId());
+                for (Post p: statuses) {
+                    System.out.println("\t" + p.getMessage());
+                }
+            }
+        }*/
+        
+        
 	}
 
 }
