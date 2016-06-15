@@ -414,9 +414,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean insertUser(FrmAddUser user) {
 		String sql =  " INSERT INTO TBLUSER"
-					+ " (userid,email,password,username,gender,registerdate,userimageurl,usertypeid,universityid,departmentid,userstatus,isconfirmed,dateofbirth)"
+					+ " (userid,email,password,username,gender,registerdate,userimageurl,usertypeid,universityid,departmentid,userstatus,isconfirmed,dateofbirth , signup_with)"
 					+ " VALUES"
-					+ " (NEXTVAL('seq_user'),?,?,?,?,NOW(),'"+environment.getProperty("KA.path")+"/resources/upload/file/user/avatar.jpg',2,?,?,'1',false,?);";
+					+ " (NEXTVAL('seq_user'),?,?,?,?,NOW(),'"+environment.getProperty("KA.path")+"/resources/upload/file/user/avatar.jpg',2,?,?,'1',false,? , '0');";
 		try (Connection cnn = dataSource.getConnection() ; PreparedStatement ps = cnn.prepareStatement(sql)){
 			ps.setString(1, user.getEmail());
 			ps.setString(2, user.getPassword());
@@ -546,9 +546,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean mobileInsertUser(FrmMobileRegister user) {
 		String sql =  " INSERT INTO TBLUSER"
-				+ " (userid,email,password,username,gender,registerdate,userimageurl,usertypeid,universityid,departmentid,userstatus,isconfirmed, sc_fb_id , sc_tw_id , sc_gm_id, sc_type,phonenumber,dateofbirth)"
+				+ " (userid,email,password,username,gender,registerdate,userimageurl,usertypeid,universityid,departmentid,userstatus,isconfirmed, sc_fb_id , sc_tw_id , sc_gm_id, sc_type,phonenumber,dateofbirth , signup_with)"
 				+ " VALUES"
-				+ " (NEXTVAL('seq_user'),?,?,?,?,NOW(),?,2,?,?,'1',false,?,?,?,?,?,?);";
+				+ " (NEXTVAL('seq_user'),?,?,?,?,NOW(),?,2,?,?,'1',false,?,?,?,?,?,?,1);";
 		try (Connection cnn = dataSource.getConnection() ; PreparedStatement ps = cnn.prepareStatement(sql)){
 			ps.setString(1, user.getEmail());
 			ps.setString(2, user.getPassword());
@@ -720,9 +720,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean insertUserSC(FrmAddUser u) {
 		String sqlFB =  " INSERT INTO TBLUSER"
-				+ " (userid,email,password,username,gender,registerdate,userimageurl,usertypeid,universityid,departmentid,userstatus,isconfirmed,sc_fb_id,sc_type)"
+				+ " (userid,email,password,username,gender,registerdate,userimageurl,usertypeid,universityid,departmentid,userstatus,isconfirmed,sc_fb_id,sc_type,signup_with)"
 				+ " VALUES"
-				+ " (NEXTVAL('seq_user'),?,?,?,?,NOW(),?,2,?,?,'1',true,?,?);";
+				+ " (NEXTVAL('seq_user'),?,?,?,?,NOW(),?,2,?,?,'1',true,?,?,2);";
 		try (Connection cnn = dataSource.getConnection() ; PreparedStatement ps = cnn.prepareStatement(sqlFB)){
 			ps.setString(1, u.getEmail());
 			ps.setString(2, u.getPassword());
