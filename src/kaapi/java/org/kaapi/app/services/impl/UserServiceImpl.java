@@ -457,7 +457,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public boolean isUpdateUserFaceboook(FrmAddUser user) {
-		String sql = "UPDATE tbluser SET  userimageurl=? , sc_fb_id=?  WHERE email = ? ";
+		String sql = "UPDATE tbluser SET  userimageurl=? , sc_fb_id=? , isconfirmed=true WHERE email = ? ";
 		try(Connection cnn = dataSource.getConnection() ; PreparedStatement ps = cnn.prepareStatement(sql)) {
 		    ps.setString(1, user.getImageUrl());
 		    ps.setString(2, user.getScID());

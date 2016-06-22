@@ -187,4 +187,145 @@ public class AuthenticationController {
 		return new ResponseEntity<Map<String , Object>>(map , HttpStatus.OK);
 	}
 	
+	@RequestMapping(value="/v2/login_with_fb" , method = RequestMethod.POST , headers = "Accept=application/json")
+	public ResponseEntity<Map<String , Object>> v2loginWithFB(
+			@RequestBody FrmAddUser s
+		){
+		Map<String, Object> map = new HashMap<String , Object>();
+		/*if(s.getEmail() == null){
+			map.put("MESSAGE", "Email is required!.");
+			map.put("STATUS", false);
+			return new ResponseEntity<Map<String , Object>>(map , HttpStatus.OK);
+		}*/
+		try{
+			
+			if(s.getEmail() == null){
+				System.out.println("User doesn't provide email, or user don't have email!");
+				s.setEmail(s.getScID());
+			}
+			
+			String password = new StringRandom().generateRandomString();
+			s.setPassword(password);
+			System.out.println(s.getPassword());
+			
+			FrmWebLogin wFrm = new FrmWebLogin();
+			wFrm.setEmail(s.getEmail());
+			FrmValidateEmail v = new FrmValidateEmail();
+			v.setEmail(wFrm.getEmail());
+			/*if(userService.isAccountConfirmed(wFrm.getEmail())){
+				map.put("MESSAGE", "This email is already registered with Khmer Academy, but not yet confirm.");
+				map.put("EMAIL", wFrm.getEmail());
+				map.put("STATUS", "NOTCONFIRMED");
+				return new ResponseEntity<Map<String , Object>>(map , HttpStatus.OK);	
+			}*/
+			
+			if(userService.checkSocialID(s.getScID())){
+				User u = userService.webLogin(wFrm);
+				if(u != null){
+					map.put("MESSAGE", "Logined success!");
+					map.put("STATUS", true);
+					map.put("USER", u);
+				}else{
+					map.put("MESSAGE", "Logined unsuccess! Invalid email!");
+					map.put("STATUS", false);
+				}
+				return new ResponseEntity<Map<String , Object>>(map , HttpStatus.OK);
+			}
+			
+			
+			
+			if(userService.validateEmail(v)){
+				//////////////////////////////////////
+				if(userService.checkSocialID(s.getScID())){
+					User u = userService.webLogin(wFrm);
+					if(u != null){
+						map.put("MESSAGE", "Logined success!");
+						map.put("STATUS", true);
+						map.put("USER", u);
+					}else{
+						map.put("MESSAGE", "Logined unsuccess! Invalid email!");
+						map.put("STATUS", false);
+					}
+				}else{
+					if(userService.isUpdateUserFaceboook(s)){
+						User u = userService.webLogin(wFrm);
+						if(u != null){
+							map.put("MESSAGE", "Logined and Updated user successfully!");
+							map.put("STATUS", true);
+							map.put("USER", u);
+						}else{
+							map.put("MESSAGE", "Invalid email! Logined unsuccess, but updated user success! ");
+							map.put("STATUS", false);
+						}
+					}else{
+						map.put("MESSAGE", "updated user unsuccess! ");
+						map.put("STATUS", false);
+					}
+				}
+				////////////////////////////////////////////////
+			}else{
+				map.put("MESSAGE", "Let signup with fb process!");
+				map.put("STATUS", true);
+				
+				if(userService.insertUserSC(s)){
+					FrmWebLogin w = new FrmWebLogin(); 
+					w.setEmail(s.getEmail());
+					User u = userService.webLogin(w);
+					if(u != null){
+						map.put("MESSAGE", "User has been inserted. Logined success and logged success!");
+						map.put("STATUS", true);
+						map.put("USER", u);
+					}else{
+						map.put("MESSAGE", "Logined unsuccess! Invalid email, but User has been inserted!");
+						map.put("STATUS", false);
+					}
+				}else{
+					map.put("MESSAGE", "User has not been inserted.");
+					map.put("STATUS", false);
+				}
+				
+				
+				/*if(userService.checkSocialID(s.getScType(), s.getScID())){
+					User u = userService.webLogin(wFrm);
+					if(u != null){
+						map.put("MESSAGE", "Logined success!");
+						map.put("STATUS", true);
+						map.put("USER", u);
+					}else{
+						map.put("MESSAGE", "Logined unsuccess! Invalid email!");
+						map.put("STATUS", false);
+					}
+				}else{
+					map.put("MESSAGE", "Let signup with fb process!");
+					map.put("STATUS", true);
+					
+					if(userService.insertUserSC(s)){
+					   
+						//new SendMailTLS().sendMaile(s.getEmail(),"fbSignUp", "<h4>You recently registered for Khmer Academy with your facebook account.</h4> <p>If you want to login without facebook account you can use this account information : <p> <p> Email : "+s.getEmail()+" </p><p> Password : "+password+" </p> ");
+				
+						FrmWebLogin w = new FrmWebLogin(); 
+						w.setEmail(s.getEmail());
+						User u = userService.webLogin(w);
+						if(u != null){
+							map.put("MESSAGE", "User has been inserted. Logined success and logged success!");
+							map.put("STATUS", true);
+							map.put("USER", u);
+						}else{
+							map.put("MESSAGE", "Logined unsuccess! Invalid email, but User has been inserted!");
+							map.put("STATUS", false);
+						}
+					}else{
+						map.put("MESSAGE", "User has not been inserted.");
+						map.put("STATUS", false);
+					}	
+				}*/
+			}
+		}catch(Exception e){
+			map.put("MESSAGE", "OPERATION FAIL");
+			map.put("STATUS", false);
+			e.printStackTrace();
+		}
+		return new ResponseEntity<Map<String , Object>>(map , HttpStatus.OK);
+	}
+	
 }
