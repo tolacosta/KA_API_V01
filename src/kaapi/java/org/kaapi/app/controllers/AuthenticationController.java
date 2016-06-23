@@ -108,12 +108,12 @@ public class AuthenticationController {
 			wFrm.setEmail(s.getEmail());
 			FrmValidateEmail v = new FrmValidateEmail();
 			v.setEmail(wFrm.getEmail());
-			if(userService.isAccountConfirmed(wFrm.getEmail())){
+			/*if(userService.isAccountConfirmed(wFrm.getEmail())){
 				map.put("MESSAGE", "This email is already registered with Khmer Academy, but not yet confirm.");
 				map.put("EMAIL", wFrm.getEmail());
 				map.put("STATUS", "NOTCONFIRMED");
 				return new ResponseEntity<Map<String , Object>>(map , HttpStatus.OK);	
-			}
+			}*/
 			if(userService.validateEmail(v)){
 				//////////////////////////////////////
 				if(userService.checkSocialID(s.getScID())){
@@ -219,7 +219,7 @@ public class AuthenticationController {
 				return new ResponseEntity<Map<String , Object>>(map , HttpStatus.OK);	
 			}*/
 			
-			if(userService.checkSocialID(s.getScID())){
+			if(userService.checkSocialIDandEmail(s.getScID(),s.getEmail())){
 				User u = userService.webLogin(wFrm);
 				if(u != null){
 					map.put("MESSAGE", "Logined success!");
@@ -235,8 +235,28 @@ public class AuthenticationController {
 			
 			
 			if(userService.validateEmail(v)){
+				
+				System.out.println("has validateEmail");
+				
+				if(userService.isUpdateUserFaceboook(s)){
+					User u = userService.webLogin(wFrm);
+					if(u != null){
+						map.put("MESSAGE", "Logined and Updated user successfully!");
+						map.put("STATUS", true);
+						map.put("USER", u);
+					}else{
+						map.put("MESSAGE", "Invalid email! Logined unsuccess, but updated user success! ");
+						map.put("STATUS", false);
+					}
+				}else{
+					map.put("MESSAGE", "updated user unsuccess! ");
+					map.put("STATUS", false);
+				}
+				
+				
 				//////////////////////////////////////
-				if(userService.checkSocialID(s.getScID())){
+				/*if(userService.checkSocialIDandEmail(s.getScID(),s.getEmail())){
+					System.out.println("validateEmail checkSocialID");
 					User u = userService.webLogin(wFrm);
 					if(u != null){
 						map.put("MESSAGE", "Logined success!");
@@ -247,6 +267,7 @@ public class AuthenticationController {
 						map.put("STATUS", false);
 					}
 				}else{
+					System.out.println("validateEmail isUpdateUserFaceboook");
 					if(userService.isUpdateUserFaceboook(s)){
 						User u = userService.webLogin(wFrm);
 						if(u != null){
@@ -261,9 +282,12 @@ public class AuthenticationController {
 						map.put("MESSAGE", "updated user unsuccess! ");
 						map.put("STATUS", false);
 					}
-				}
+				}*/
 				////////////////////////////////////////////////
 			}else{
+				
+				System.out.println("no validateEmail");
+				
 				map.put("MESSAGE", "Let signup with fb process!");
 				map.put("STATUS", true);
 				

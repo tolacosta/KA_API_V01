@@ -50,6 +50,7 @@ public interface UserService {
 	
 	public boolean isUpdateUserFaceboook(FrmAddUser user);
 	public boolean checkSocialID(String ID);
+	public boolean checkSocialIDandEmail(String ID, String email);
 	
 	public boolean updateResendCountEmail(String email);
 

@@ -462,6 +462,11 @@ public class UserServiceImpl implements UserService {
 		    ps.setString(1, user.getImageUrl());
 		    ps.setString(2, user.getScID());
 		    ps.setString(3, user.getEmail());
+		    /*if(user.getDateofbirth() == null){
+		    	ps.setDate(4, null);
+		    }else{
+			    ps.setDate(4, new java.sql.Date(user.getDateofbirth().getTime()));
+		    }*/
 			if(ps.executeUpdate()>0)
 				return true;
 		} catch (SQLException e) {
@@ -562,11 +567,7 @@ public class UserServiceImpl implements UserService {
 			ps.setString(10,user.getScGmailId());
 			ps.setString(11,user.getScType());
 			ps.setString(12, user.getPhoneNumber());
-			if(user.getDateOfBirth() == null){
-				ps.setDate(13, null);
-			}else{
-				ps.setDate(13, new java.sql.Date(user.getDateOfBirth().getTime()));
-			}
+			ps.setDate(13, user.getDateOfBirth());
 			if(ps.executeUpdate()>0)
 				return true;
 		} catch (SQLException e) {
@@ -701,10 +702,28 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public boolean checkSocialID(String scID) {
+	public boolean checkSocialID(String ID) {
 		String sqlFB = "select sc_fb_id, count(sc_fb_id) FROM tbluser WHERE sc_fb_id = ?  GROUP BY sc_fb_id";
 		try(Connection cnn = dataSource.getConnection() ; PreparedStatement ps = cnn.prepareStatement(sqlFB) ){
+			ps.setString(1, ID );
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()){
+				if(rs.getInt("count")>0){
+					return true;
+				}
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean checkSocialIDandEmail(String scID, String email) {
+		String sqlFB = "select sc_fb_id, count(sc_fb_id) FROM tbluser WHERE sc_fb_id = ? and email = ?  GROUP BY sc_fb_id";
+		try(Connection cnn = dataSource.getConnection() ; PreparedStatement ps = cnn.prepareStatement(sqlFB) ){
 			ps.setString(1, scID );
+			ps.setString(2, email );
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()){
 				if(rs.getInt("count")>0){
@@ -720,9 +739,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean insertUserSC(FrmAddUser u) {
 		String sqlFB =  " INSERT INTO TBLUSER"
-				+ " (userid,email,password,username,gender,registerdate,userimageurl,usertypeid,universityid,departmentid,userstatus,isconfirmed,sc_fb_id,sc_type,signup_with)"
+				+ " (userid,email,password,username,gender,registerdate,userimageurl,usertypeid,universityid,departmentid,userstatus,isconfirmed,sc_fb_id,sc_type,signup_with,dateofbirth)"
 				+ " VALUES"
-				+ " (NEXTVAL('seq_user'),?,?,?,?,NOW(),?,2,?,?,'1',true,?,?,2);";
+				+ " (NEXTVAL('seq_user'),?,?,?,?,NOW(),?,2,?,?,'1',true,?,?,2,?);";
 		try (Connection cnn = dataSource.getConnection() ; PreparedStatement ps = cnn.prepareStatement(sqlFB)){
 			ps.setString(1, u.getEmail());
 			ps.setString(2, u.getPassword());
@@ -738,6 +757,7 @@ public class UserServiceImpl implements UserService {
 			ps.setInt(7, 12);
 			ps.setString(8, u.getScID());
 			ps.setString(9, u.getScType());
+			ps.setDate(10, u.getDateofbirth());
 			if(ps.executeUpdate()>0)
 				return true;
 		} catch (SQLException e) {

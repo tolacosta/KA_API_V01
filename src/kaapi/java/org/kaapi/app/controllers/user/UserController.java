@@ -5,6 +5,7 @@ import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -448,18 +449,27 @@ public class UserController {
 			User u = userService.getUSerEmail(email);
 //			System.out.println("Email: "+u.getEmail());
 			if(u != null){
-					SecureRandom random = new SecureRandom();
-				    byte bytes[] = new byte[20];
-				    random.nextBytes(bytes);
-				    String token = bytes.toString();	
+					String token = UUID.randomUUID().toString();
 				    userService.insertHistoryResetPassWord(token,u.getEmail(),type);
 				    if(type.equals("reset")){
 				    	new SendMailTLS().sendMaile(email,type, "<h4>We have just received a password reset request for "+u.getEmail()+" </h4> <h4> Please click <a href='"+environment.getProperty("KA.UI_PATH")+"/reset?code="+token+"'>here</a> to reset your password.  </h4> "
 				    			+ "<h4>If the link does not work for you, please copy and paste this link into your browser:</h4><a href='"+environment.getProperty("KA.UI_PATH")+"/reset?code="+token+"'>"+environment.getProperty("KA.UI_PATH")+"/reset?code="+token+"</a><h4>If you did not request to change your password, you can safely ignore this email.</h4>");
 				    }else{
-				    	new SendMailTLS().sendMaile(email,type, "   <h1>Confirm your email address</h1> <h4>Thanks for joining the KhmerAcademy community! Please confirm your email address so you can use KhmerAcademy.</h4>" 
-				    											+ " <h4><a href='"+environment.getProperty("KA.UI_PATH")+"/confirmemail?code="+token+"'>"+"Click to Confirm Your email</a></h4>"
-				    											+ " <h4>If the link does not work for you, please copy and paste this link into your browser:</h4><a href='"+environment.getProperty("KA.UI_PATH")+"/confirmemail?code="+token+"'>"+environment.getProperty("KA.UI_PATH")+"/confirmemail?code="+token+"</a>");
+				    	new SendMailTLS().sendMaile(email,type, 
+				    			 " <h3>សូមស្វាគមន៍ មកកាន់គេហទំព័រ KhmerAcademy!</h3> "
+				    			+" <h4>លោកអ្នកបានចុះឈ្មោះបង្កើតគណនី ដើម្បីប្រើប្រាស់ KhmerAcademy បានជោគជ័យហើយ ក៏ប៉ុន្តែគណនីរបស់លោកអ្នកមិនអាចដំណើរការនៅឡើយទេ ។ ដើម្បីធ្វើអោយគណនីរបស់លោកអ្នកដំណើរការបាន សូមលោកអ្នកចុចតំណភ្ជាប់ខាង ក្រោមនេះ </h4>" 
+				    			+" <h4><a href='"+environment.getProperty("KA.UI_PATH")+"/confirmemail?code="+token+"'>"+"បញ្ជាក់អ៊ីមែល</a></h4>"
+				    			+" <h4>ប្រសិនបើតំណភា្ជប់នេះមិនដំណើរការនោះទេសូមលោកអ្នកចម្លងតំណភ្ជាប់ខាងក្រោមនេះដាក់នៅលើ Browser របស់អ្នក:</h4><a href='"+environment.getProperty("KA.UI_PATH")+"/confirmemail?code="+token+"'>"+environment.getProperty("KA.UI_PATH")+"/confirmemail?code="+token+"</a>"
+				    			+" <h4>ប្រសិនបើអ្នកមិនបានចុះឈ្មោះ ឬស្នើរសុំសារពីគេហទំព័រ KhmerAcademy នោះទេសូមលោកអ្នក រំលងសារមួយនេះ​ </h4>"
+				    			+" <h4>សូមអរគុណ!</h4>"
+				    			+" <hr/>"
+				    			+" <h3>Welcome to KhmerAcademy!</h3> "
+					    		+" <h4>You have been registered to create KhmerAcademy Account successfully, but your account is inactive. Please click this link to active your account. </h4>" 
+					    		+" <h4><a href='"+environment.getProperty("KA.UI_PATH")+"/confirmemail?code="+token+"'>"+"Confirm Email</a></h4>"
+					    		+" <h4>If If the link does not work for you, please copy and paste this link into your browser::</h4><a href='"+environment.getProperty("KA.UI_PATH")+"/confirmemail?code="+token+"'>"+environment.getProperty("KA.UI_PATH")+"/confirmemail?code="+token+"</a>"
+					    		+" <h4>If you did not request to change your password, you can safely ignore this email. </h4>"
+						    	+" <h4>Thanks!</h4>"
+					    		+" <hr/>");
 				    }
 				map.put("MESSAGE", "RECORD FOUND");
 				map.put("STATUS", true);
@@ -477,21 +487,36 @@ public class UserController {
 		
 	}
 	
+	/*
+	 * This function is used to send email to user after register
+	 */
 	private boolean sendEmailToUser(String type, String email){
 		User u = userService.getUSerEmail(email);
 		if(u != null){
-				SecureRandom random = new SecureRandom();
-			    byte bytes[] = new byte[20];
-			    random.nextBytes(bytes);
-			    String token = bytes.toString();	
+				String token = UUID.randomUUID().toString();
 			    userService.insertHistoryResetPassWord(token,u.getEmail(),type);
+			    
 			    if(type.equals("reset")){
 			    	new SendMailTLS().sendMaile(email,type, "<h4>We have just received a password reset request for "+u.getEmail()+" </h4> <h4> Please click <a href='"+environment.getProperty("KA.UI_PATH")+"/reset?code="+token+"'>here</a> to reset your password.  </h4> "
 			    			+ "<h4>If the link does not work for you, please copy and paste this link into your browser:</h4><a href='"+environment.getProperty("KA.UI_PATH")+"/reset?code="+token+"'>"+environment.getProperty("KA.UI_PATH")+"/reset?code="+token+"</a><h4>If you did not request to change your password, you can safely ignore this email.</h4>");
 			    }else{
-			    	new SendMailTLS().sendMaile(email,type, "   <h1>Confirm your email address</h1> <h4>Thanks for joining the KhmerAcademy community! Please confirm your email address so you can use KhmerAcademy.</h4>" 
-			    											+ " <h4><a href='"+environment.getProperty("KA.UI_PATH")+"/confirmemail?code="+token+"'>"+"Click to Confirm Your email</a></h4>"
-			    											+ " <h4>If the link does not work for you, please copy and paste this link into your browser:</h4><a href='"+environment.getProperty("KA.UI_PATH")+"/confirmemail?code="+token+"'>"+environment.getProperty("KA.UI_PATH")+"/confirmemail?code="+token+"</a>");
+			    	
+			    	
+			    	new SendMailTLS().sendMaile(email,type, 
+			    			 " <h3>សូមស្វាគមន៍ មកកាន់គេហទំព័រ KhmerAcademy!</h3> "
+			    			+" <h4>លោកអ្នកបានចុះឈ្មោះបង្កើតគណនី ដើម្បីប្រើប្រាស់ KhmerAcademy បានជោគជ័យហើយ ក៏ប៉ុន្តែគណនីរបស់លោកអ្នកមិនអាចដំណើរការនៅឡើយទេ ។ ដើម្បីធ្វើអោយគណនីរបស់លោកអ្នកដំណើរការបាន សូមលោកអ្នកចុចតំណភ្ជាប់ខាង ក្រោមនេះ </h4>" 
+			    			+" <h4><a href='"+environment.getProperty("KA.UI_PATH")+"/confirmemail?code="+token+"'>"+"បញ្ជាក់អ៊ីមែល</a></h4>"
+			    			+" <h4>ប្រសិនបើតំណភា្ជប់នេះមិនដំណើរការនោះទេសូមលោកអ្នកចម្លងតំណភ្ជាប់ខាងក្រោមនេះដាក់នៅលើ Browser របស់អ្នក:</h4><a href='"+environment.getProperty("KA.UI_PATH")+"/confirmemail?code="+token+"'>"+environment.getProperty("KA.UI_PATH")+"/confirmemail?code="+token+"</a>"
+			    			+" <h4>ប្រសិនបើអ្នកមិនបានចុះឈ្មោះ ឬស្នើរសុំសារពីគេហទំព័រ KhmerAcademy នោះទេសូមលោកអ្នក រំលងសារមួយនេះ​ </h4>"
+			    			+" <h4>សូមអរគុណ!</h4>"
+			    			+" <hr/>"
+			    			+" <h3>Welcome to KhmerAcademy!</h3> "
+				    		+" <h4>You have been registered to create KhmerAcademy Account successfully, but your account is inactive. Please click this link to active your account. </h4>" 
+				    		+" <h4><a href='"+environment.getProperty("KA.UI_PATH")+"/confirmemail?code="+token+"'>"+"Confirm Email</a></h4>"
+				    		+" <h4>If If the link does not work for you, please copy and paste this link into your browser::</h4><a href='"+environment.getProperty("KA.UI_PATH")+"/confirmemail?code="+token+"'>"+environment.getProperty("KA.UI_PATH")+"/confirmemail?code="+token+"</a>"
+				    		+" <h4>If you did not request to change your password, you can safely ignore this email. </h4>"
+					    	+" <h4>Thanks!</h4>"
+				    		+" <hr/>");
 			    }
 			   return true;
 		}else{
