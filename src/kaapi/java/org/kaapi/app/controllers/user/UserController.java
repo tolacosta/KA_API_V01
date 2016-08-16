@@ -610,4 +610,25 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String , Object>>(map , HttpStatus.OK);	
 	}
+	
+	@RequestMapping(value="findUserByUserId/{user-id}" , method = RequestMethod.GET , headers = "accept=Application/json")
+	public ResponseEntity<Map<String , Object>> findUserByUserId(@PathVariable("user-id") String userId){
+		Map<String , Object> map = new HashMap<String , Object> ();
+		try{
+			System.out.println(userId);
+			User u = userService.findUserById(userId);
+			if(u != null){
+				map.put("MESSAGE", "Logined success!");
+				map.put("STATUS", true);
+				map.put("USER", u);
+			}else{
+				map.put("MESSAGE", "Logined unsuccess! Invalid email!");
+				map.put("STATUS", false);
+			}
+		}catch(Exception e){
+			map.put("MESSAGE", "OPERATION FAIL");
+			map.put("STATUS", false);
+		}
+		return new ResponseEntity<Map<String , Object>>(map , HttpStatus.OK);
+	}
 }

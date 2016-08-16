@@ -53,6 +53,9 @@ public interface UserService {
 	public boolean checkSocialIDandEmail(String ID, String email);
 	
 	public boolean updateResendCountEmail(String email);
+	
+	
+	public User findUserById(String userId);
 
 	
 	

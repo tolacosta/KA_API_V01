@@ -241,6 +241,7 @@
 			<artifactId>gson</artifactId>
 			<version>2.5</version>
 		</dependency>
+		
 		<!-- add swagger dependency -->
 		<dependency>
 			<groupId>com.mangofactory</groupId>
