@@ -11,10 +11,11 @@ public class ScrapYoutubeVideo {
    public static void main(String[] args) throws IOException {
 		try{
 			
-			Document doc = Jsoup.connect("https://www.youtube.com/playlist?list=PLWznN7ZS7n8U-tlROS8R5sYnXOSZZUrIx").get();
+			Document doc = Jsoup.connect("https://www.youtube.com/playlist?list=PLWznN7ZS7n8VwryGOfpBIDgrVKMKZedLF").get();
 			Elements elementTitles = doc.select(".pl-video");
-			/*System.out.println(elementTitles);*/
+//			/*System.out.println(elementTitles);*/
 			StringBuilder data = new StringBuilder();
+			System.out.println("===>" + elementTitles);
 			for(Element elementTitle : elementTitles){
 				
 				/*System.out.println(elementTitle.select("a.pl-video-title-link").text());

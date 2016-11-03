@@ -2,22 +2,24 @@ package org.kaapi.app.test;
 
 
 
+import java.util.Base64;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class BCryptPasswordEncoderTest {
 
-	/*public static void main(String[] args) {
+	public static void main(String[] args) {
 		
 			// Encrypt Password
 //			System.out.println(new BCryptPasswordEncoder().encode("!@#$KAAPI"));
 			
 			//EncryptPassword basic authentication
-		  //  System.out.println(Base64.getUrlEncoder().encodeToString("KAAPI!@#$:!@#$KAAPI".getBytes()));
+		    System.out.println(Base64.getUrlEncoder().encodeToString("dev:!@#api".getBytes()));
 
-			String str = "61";
+//			String str = "61";
 
 
-	        // encode data using BASE64
+	      /*  // encode data using BASE64
 	        String encoded = DatatypeConverter.printBase64Binary(str.getBytes());
 	        System.out.println("encoded value is \t" + encoded);
 
@@ -52,10 +54,10 @@ public class BCryptPasswordEncoderTest {
 			 
 			 UUID uuid4 = UUID.fromString("1");
 			 long l4 = ByteBuffer.wrap(uuid4.toString().getBytes()).getLong();
-			 System.out.println(Long.toString(l4,Character.MAX_RADIX));
+			 System.out.println(Long.toString(l4,Character.MAX_RADIX));*/
 		
 		
-	}*/
+	}
 	
 }
 

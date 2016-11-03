@@ -1747,7 +1747,41 @@ public class PlayListServiceImpl implements PlayListServics{
 					   + " WHERE A.status = true " + ((mID=="") ? "" : " AND maincategory= "+ mID+ " ")
 					   + " ORDER BY 1 DESC "
 					   + " LIMIT ? OFFSET ?" ;
+			/*String sql = "SELECT"
+							+ "	AAA.playlistid,"
+							+ "	AAA.playlistname,"
+							+ "	AAA.thumbnailurl,"
+							+ "	BBB.videoid,"
+							+ " AAA.maincategory "
+						+ "	FROM"
+						+ "	("
+						+ "		SELECT"
+						+ "			playlistid,"
+						+ "			playlistname,"
+						+ "			thumbnailurl,"
+						+ "			description, maincategory"
+						+ "		FROM"
+						+ "			tblplaylist"
+						+ "		WHERE"
+						+ "			status = TRUE"
+						+ "		ORDER BY"
+						+ "			playlistid DESC"
+						+ "		LIMIT ? OFFSET ? "
+						+ "	) AAA,"
+						+ "	("
+						+ "		SELECT"
+						+ "			playlistid,"
+						+ "			MIN (videoid) videoid"
+						+ "		FROM"
+						+ "			tblplaylistdetail"
+						+ "		GROUP BY"
+						+ "			playlistid"
+						+ "	) BBB"
+						+ "	WHERE"
+						+ "		AAA.playlistid = BBB.playlistid " + ((mID=="") ? "" : " AND AAA.maincategory= "+ mID+ " ");*/
+			
 			PreparedStatement ps = con.prepareStatement(sql);
+			System.out.println("SQL ======> "+ sql);
 			ps.setInt(1, pagin.getItem());
 			ps.setInt(2, pagin.offset());
 			rs = ps.executeQuery();
@@ -1755,7 +1789,7 @@ public class PlayListServiceImpl implements PlayListServics{
 				playlist =new PlaylistDTO();
 				playlist.setPlaylistId(Encryption.encode(rs.getString("playlistid")));
 				playlist.setPlaylistName(rs.getString("playlistname"));
-				playlist.setDescription(rs.getString("description"));
+//				playlist.setDescription(rs.getString("description"));
 //				System.out.println(rs.getString("videoid"));
 				playlist.setVideoId(Encryption.encode(rs.getString("videoid")));
 				playlist.setThumbnailUrl(rs.getString("thumbnailurl"));

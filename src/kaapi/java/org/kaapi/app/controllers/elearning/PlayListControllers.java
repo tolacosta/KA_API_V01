@@ -833,7 +833,7 @@ public class PlayListControllers {
 		try{
 			
 			Pagination pagin = new Pagination();
-			pagin.setItem(10);
+			pagin.setItem(25);
 			pagin.setPage(1);
 			
 			/*pagin.setTotalCount(playlistservice.countPlaylists("empty"));
@@ -846,29 +846,29 @@ public class PlayListControllers {
 				map.put("STATUS_COURSE", false);
 			}
 			
-			pagin.setItem(12);
+			/*pagin.setItem(12);
 			ArrayList<Category> categories = tutorialService.listTutorial(pagin);
 			if(!categories.isEmpty()){
 				map.put("LIST_CATEGORIES", categories);
 			}else{
 				map.put("STATUS_CATEGORIES", false);
-			}
+			}*/
 			
-			pagin.setItem(10);
+			/*pagin.setItem(10);
 			List<ForumCommentDTO> question = forumCommentService.listCommentDTO(pagin);
 			if(!categories.isEmpty()){
 				map.put("LIST_QUESTION", question);
 			}else{
 				map.put("STATUS_QUESTION", false);
-			}
+			}*/
 			
-			pagin.setItem(20);
+			/*pagin.setItem(20);
 			ArrayList<Website> website = websiteService.findWebsitebyCategoryId(pagin, "empty");
 			if(!website.isEmpty()){
 				map.put("LIST_WEBSTIE", website);
 			}else{
 				map.put("STATUS_WEBSITE", false);
-			}
+			}*/
 			
 		}catch(Exception e){
 			e.printStackTrace();
